@@ -8,7 +8,10 @@
 
 #import "ViewController.h"
 
-@interface ViewController ()
+@interface ViewController ()<UITableViewDelegate,UITableViewDataSource>
+
+@property (nonatomic, strong) NSMutableArray *titles;
+@property (nonatomic, strong) NSMutableArray *classNames;
 
 @end
 
@@ -16,14 +19,52 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view, typically from a nib.
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.titles = @[].mutableCopy;
+    self.classNames = @[].mutableCopy;
+    
+    [self addCell:@"樱花雨" className:@"YinghuaController"];
+    [self addCell:@"圣诞礼物" className:@"ShengdanController"];
+    [self addCell:@"邮轮" className:@"YoulunController"];
+    [self addCell:@"棒棒糖" className:@"LollipopController"];
+    
+    UITableView *tabView = [[UITableView alloc] initWithFrame:CGRectMake(0, 0, mScreenWidth, mScreenHeight) style:UITableViewStylePlain];
+    tabView.dataSource = self;
+    tabView.delegate = self;
+    [self.view addSubview:tabView];
 }
 
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+- (void)addCell:(NSString *)title className:(NSString *)className
+{
+    [self.titles addObject:title];
+    [self.classNames addObject:className];
 }
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    return self.titles.count;
+}
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    static NSString *cellid = @"cellIdentifier";
+    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:cellid];
+    if (!cell) {
+        cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:cellid];
+    }
+    cell.textLabel.text = self.titles[indexPath.row];
+    return cell;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSString *clsName = self.classNames[indexPath.row];
+    Class cls = NSClassFromString(clsName);
+    UIViewController *vc = [[cls alloc] init];
+    vc.title = self.titles[indexPath.row];
+    [self.navigationController pushViewController:vc animated:YES];
+}
+
 
 
 @end

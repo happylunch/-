@@ -1,0 +1,15 @@
+//
+//  PrefixHeader.pch
+//  Yinghuayu
+//
+//  Created by zt-2009958 on 16/12/13.
+//  Copyright © 2016年 happy. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+#define mScreenWidth        [UIScreen mainScreen].bounds.size.width
+#define mScreenHeight       [UIScreen mainScreen].bounds.size.height
+
+#endif /* PrefixHeader_pch */
